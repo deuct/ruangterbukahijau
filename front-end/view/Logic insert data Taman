@@ -1,0 +1,6 @@
+Logic insert data Taman
+
+1. Generate random id untuk jadi sebagai id taman sementara (sebelum di input)
+2. Store untuk data lstgallery dan location untuk fk nya sementara gunakan temporary id taman (yg udah di generate poin 1)
+3. Insert data taman
+4. Update data yang tadi pake code taman yang udah masuk ke database

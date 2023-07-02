@@ -1,0 +1,29 @@
+.setting-icon {
+    border-radius: 6px;
+    box-shadow: 0px 0px 2px 1px #bdbdbd;
+    margin: 10px 5px;
+    width: 30%;
+    max-width: 30%;
+    height: auto;
+    max-height: 150px;
+    padding: 5px;
+    overflow-y: hidden;
+    display: inline-block;
+}
+
+.setting-icon:hover {
+    background: #d0d0d0;
+}
+
+.setting-icon img {
+    display: block;
+    width: 90%;
+    height: 65%;
+    margin: auto;
+}
+
+.setting-icon span {
+    margin-top: 4px;
+    display: block;
+    text-align: center;
+}

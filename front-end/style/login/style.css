@@ -1,0 +1,48 @@
+img#image-login {
+  width: auto;
+  height: 350px;
+  margin: auto !important;
+  display: block;
+}
+
+.btn-login:hover {
+  background: #006c67;
+  color: white;
+}
+
+.login-link {
+  text-align: center;
+  display: block;
+  margin-top: 15px;
+}
+
+.login-link a:hover {
+  text-decoration: none;
+}
+
+#form-login {
+  width: 90%;
+  display: block;
+  margin: auto;
+}
+
+.form-control {
+  border: 1px solid #006c67 !important;
+}
+
+::placeholder {
+  text-align: center;
+}
+
+.title h2 {
+  color: #006c67;
+  font-weight: bold;
+  text-align: center;
+}
+
+.title-desc {
+  color: #006c67;
+  text-align: center;
+  margin-top: 5px;
+  display: block;
+}
