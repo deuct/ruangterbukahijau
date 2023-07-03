@@ -21,6 +21,7 @@ $isEdit = isset($_GET['edit']) ? $_GET['edit'] : "";
 
   <link rel="stylesheet" href="<?= $baseURL ?>/front-end/script/leaflet/src/L.Control.MapCenterCoord.css" />
   <script src="<?= $baseURL ?>/front-end/script/leaflet/src/L.Control.MapCenterCoord.js"></script>
+  <script src="<?= $baseURL ?>/front-end/script/leaflet/src/dist/leaflet-search.js"></script>
   <!-- End Leaflet -->
 </head>
 
@@ -59,6 +60,7 @@ $isEdit = isset($_GET['edit']) ? $_GET['edit'] : "";
           L.control
             .mapCenterCoord()
             .addTo(map);
+          map.addControl(L.control.search());
         </script>
       </div>
     </div>

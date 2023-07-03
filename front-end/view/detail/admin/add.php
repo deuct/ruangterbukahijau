@@ -4,6 +4,7 @@ include_once('./back-end/sys/sessionlogin.php');
 include_once('./back-end/sys/sessiondestroy.php');
 
 $idTaman = $_GET['id'];
+$setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +21,9 @@ $idTaman = $_GET['id'];
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="<?= $baseURL ?>/front-end/script/leaflet/src/L.Control.MapCenterCoord.css" />
+    <script src="<?= $baseURL ?>/front-end/script/leaflet/src/L.Control.MapCenterCoord.js"></script>
     <!-- End Leaflet -->
     <script type="text/javascript">
         window.history.forward();
@@ -32,9 +36,9 @@ $idTaman = $_GET['id'];
             <div class="col-lg-10 col-md-10 col-sm-12">
                 <button type="button" class="btn btn-back" onclick="back()">&#8826; Back</button>
                 <div class="title-header">
-                    <h2>Add Page for</h2>
+                    <h2>Add New Taman</h2>
                 </div>
-                <div class="title-header-desc">Taman Barito</div>
+                <div class="title-header-desc"></div>
             </div>
         </div>
     </div>
@@ -174,6 +178,10 @@ $idTaman = $_GET['id'];
                                 maxZoom: 19,
                                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
                             }).addTo(map);
+
+                            L.control
+                                .mapCenterCoord()
+                                .addTo(map);
                         </script>
                     </div>
                 </div>
@@ -183,7 +191,7 @@ $idTaman = $_GET['id'];
         <div class="row">
             <div class="col-lg-10 col-md-10 col-sm-12 text-center">
                 <div class="btn-edit-submit">
-                    <input type="submit" class="btn btn-green" value="Submit">
+                    <input type="submit" onclick="finishForm()" class=" btn btn-green" value="Submit">
                 </div>
             </div>
         </div>
@@ -196,6 +204,7 @@ $idTaman = $_GET['id'];
 
     <script type="text/javascript">
         var baseURL = `<?= $baseURL ?>`;
+        var isSetMap = `<?= $setmap ?>`;
         var request;
         var kodeTaman = getURLParam();
         let arrImgUpload = new Array();
@@ -354,8 +363,19 @@ $idTaman = $_GET['id'];
             URLRedirect = "<?= $baseURL ?>/detail/setmap?id=<?= $idTaman ?>";
         }
 
+        function finishForm() {
+            URLRedirect = "<?= $baseURL ?>/list-admin";
+        }
+
         $("#add-taman").submit(function(e) {
             e.preventDefault();
+
+            if (isSetMap === "") {
+                let text = "You haven't set maps. Are you sure want to submit ?";
+                if (confirm(text) == false) {
+                    return;
+                }
+            }
 
             if (request) {
                 request.abort();

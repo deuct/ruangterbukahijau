@@ -175,9 +175,6 @@ function addTaman($conn, $baseURL, $data)
         modified_at = '$dateNow',
         modified_by = 'superadmin'
         WHERE kode_rth = '$kodeTaman'";
-
-    // echo $qInsertDetail;
-    // exit();
     $stmt = $conn->prepare($qInsertDetail);
     $stmt->execute();
 

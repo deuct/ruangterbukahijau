@@ -17,6 +17,68 @@ if ($data !== null) {
 if (isset($action)) {
     if ($action == 'generateId') {
         generateId($conn, $baseURL);
+    } else if ($action == 'getAllTaman') {
+        getAllTaman($conn, $baseURL);
+    } else if ($action == 'deleteDetailTaman') {
+        deleteDetailTaman($conn, $baseURL, $data);
+    }
+}
+
+function deleteDetailTaman($conn, $baseURL, $data)
+{
+    $responseObj = new stdClass();
+    $kodeTaman = $data->kodeTaman;
+
+    // $qGetKordinatId = "SELECT kode_kordinat FROM detail_rth WHERE kode_rth = '$kodeTaman'";
+    // $stmt = $conn->prepare($qGetKordinatId);
+    // $stmt->execute();
+    // $kordinatId = $stmt->get_result();
+
+    // foreach ($kordinatId as $ki) {
+    //     $kordinatId = $ki['kode_kordinat'];
+    // }
+
+    $qDeleteKordinat = "DELETE FROM kordinat_rth WHERE kode_taman = '$kodeTaman'";
+    $stmt = $conn->prepare($qDeleteKordinat);
+    $stmt->execute();
+
+    $qDeleteDetail = "DELETE FROM detail_rth WHERE kode_rth = '$kodeTaman'";
+    $stmt = $conn->prepare($qDeleteDetail);
+    $stmt->execute();
+
+    $responseObj->status = "success";
+    $responseObj->msg = "Successfully delete data";
+    $responseObj->kodeTaman = $kodeTaman;
+    $responseJSON = json_encode($responseObj);
+
+    echo $responseJSON;
+}
+
+function getAllTaman($conn, $baseURL)
+{
+    $responseObj = new stdClass();
+
+    $qGetListTaman = "SELECT detail.kode_rth, detail.nama, detail.kapasitas, detail.luas_area, 
+    CASE WHEN detail.status = '0' THEN 'Close'
+    WHEN detail.status = '1' THEN 'Open'
+    WHEN detail.status = '2' THEN 'Under Maintenance'
+    END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.rt, detail.rw, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth";
+    $stmt = $conn->prepare($qGetListTaman);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $resultArr = array();
+    foreach ($result as $key => $rs) {
+        $resultArr[] = $rs;
+    }
+
+    if (count($resultArr) > 0) {
+        $responseObj->status = "success";
+        $responseObj->msg = "Successfully fetch list data";
+        $responseObj->data = $resultArr;
+        $responseJSON = json_encode($responseObj);
+
+        echo $responseJSON;
     }
 }
 

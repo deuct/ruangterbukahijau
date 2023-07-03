@@ -26,8 +26,8 @@ include_once('./back-end/sys/sessiondestroy.php');
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
   <script type="text/javascript">
-        window.history.forward();
-    </script>
+    window.history.forward();
+  </script>
 </head>
 
 <body>
@@ -60,111 +60,81 @@ include_once('./back-end/sys/sessiondestroy.php');
       </div>
 
       <div class="row justify-content-center">
-        <div class="col-lg-10 col-md-10 col-sm-12">
-          <div class="card-listing">
-            <div class="card-image">
-              <img src="<?= $baseURL ?>/assets/Ruangterbukahijau-sample.jpeg" />
-            </div>
-            <div class="card-fill">
-              <div class="card-title">
-                <h4>Taman Barito</h4>
-              </div>
-              <div class="card-status">Open</div>
-              <div class="card-desc">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Nesciunt eius velit ab repudiandae optio dolore autem animi
-                ipsam in esse corrupti, impedit nemo porro reprehenderit fugit
-                dolorem quidem rem debitis cupiditate libero illum
-                voluptatibus ratione!
-              </div>
-            </div>
-          </div>
-          <div class="card-listing">
-            <div class="card-image">
-              <img src="<?= $baseURL ?>/assets/Ruangterbukahijau-sample.jpeg" />
-            </div>
-            <div class="card-fill">
-              <div class="card-title">
-                <h4>Taman Barito</h4>
-              </div>
-              <div class="card-status">Open</div>
-              <div class="card-desc">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Nesciunt eius velit ab repudiandae optio dolore autem animi
-                ipsam in esse corrupti, impedit nemo porro reprehenderit fugit
-                dolorem quidem rem debitis cupiditate libero illum
-                voluptatibus ratione!
-              </div>
-            </div>
-          </div>
-          <div class="card-listing">
-            <div class="card-image">
-              <img src="<?= $baseURL ?>/assets/Ruangterbukahijau-sample.jpeg" />
-            </div>
-            <div class="card-fill">
-              <div class="card-title">
-                <h4>Taman Barito</h4>
-              </div>
-              <div class="card-status">Open</div>
-              <div class="card-desc">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Nesciunt eius velit ab repudiandae optio dolore autem animi
-                ipsam in esse corrupti, impedit nemo porro reprehenderit fugit
-                dolorem quidem rem debitis cupiditate libero illum
-                voluptatibus ratione!
-              </div>
-            </div>
-          </div>
-          <div class="card-listing">
-            <div class="card-image">
-              <img src="<?= $baseURL ?>/assets/Ruangterbukahijau-sample.jpeg" />
-            </div>
-            <div class="card-fill">
-              <div class="card-title">
-                <h4>Taman Barito</h4>
-              </div>
-              <div class="card-status">Open</div>
-              <div class="card-desc">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Nesciunt eius velit ab repudiandae optio dolore autem animi
-                ipsam in esse corrupti, impedit nemo porro reprehenderit fugit
-                dolorem quidem rem debitis cupiditate libero illum
-                voluptatibus ratione!
-              </div>
-            </div>
-          </div>
-          <div class="card-listing">
-            <div class="card-image">
-              <img src="<?= $baseURL ?>/assets/Ruangterbukahijau-sample.jpeg" />
-            </div>
-            <div class="card-fill">
-              <div class="card-title">
-                <h4>Taman Barito</h4>
-              </div>
-              <div class="card-status">Open</div>
-              <div class="card-desc">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Nesciunt eius velit ab repudiandae optio dolore autem animi
-                ipsam in esse corrupti, impedit nemo porro reprehenderit fugit
-                dolorem quidem rem debitis cupiditate libero illum
-                voluptatibus ratione!
-              </div>
-            </div>
-          </div>
+        <div id="body-list" class="col-lg-10 col-md-10 col-sm-12">
         </div>
       </div>
     </div>
   </div>
 
   <?php include_once './front-end/view/component/footer.php' ?>
-  
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    // Nanti bikin untuk change font size untuk header pas on scroll page
+    var baseURL = `<?= $baseURL ?>`;
+    var imgDirShort = `<?= $imgDirShort ?>`;
+
+    $(document).ready(function() {
+      $.ajax({
+        url: baseURL + "/api/listing",
+        type: "POST",
+        data: {
+          action: "getAllTaman",
+        },
+        success: function(response) {
+          var resJSON = $.parseJSON(response);
+          // console.log(resJSON);
+
+          if (resJSON.status === "failed") {
+            console.log(resJSON.msg);
+          } else if (resJSON.status === "success") {
+            // console.log(resJSON.data);
+            assignValue(resJSON.data);
+          }
+        },
+        error: function() {
+          console.log("failed");
+        }
+      });
+    })
+
+    function assignValue(data) {
+      let thumbnail;
+      let nameTaman;
+
+      for (let i = 0; i < data.length; i++) {
+        thumbnail = data[i].lst_gambar !== "" ? JSON.parse(data[i].lst_gambar) : "";
+        nameTaman = data[i].nama;
+        statusTaman = data[i].status;
+        descTaman = data[i].deskripsi;
+
+        if (thumbnail !== "") {
+          thumbnail = thumbnail[0];
+        }
+
+        let cardListing = document.createElement('div');
+        cardListing.id = "card-listing";
+        cardListing.innerHTML = `
+            <div class="card-image">
+              <img src="` + baseURL + imgDirShort + `/` + thumbnail + ` "/>
+            </div>
+            <div class="card-fill">
+              <div class="card-title">
+                <h4>` + nameTaman + `</h4>
+              </div>
+              <div class="card-status">` + statusTaman + `</div>
+              <div class="card-desc">
+                ` + descTaman + `
+              </div>
+            </div>`;
+
+        let bodyList = document.getElementById('body-list');
+        bodyList.appendChild(cardListing);
+      }
+    }
   </script>
 </body>
 
