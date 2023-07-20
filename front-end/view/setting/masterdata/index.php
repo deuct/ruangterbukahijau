@@ -1,4 +1,7 @@
-<?php include_once('./environment.php') ?>
+<?php
+include_once('./environment.php');
+include_once('./back-end/sys/sessionlogin.php');
+?>
 
 <!DOCTYPE html>
 <html lang="en">

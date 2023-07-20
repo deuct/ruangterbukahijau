@@ -126,6 +126,7 @@ $route->add("/detail/setmap", "front-end/view/detail/admin/setmap.php");
 $route->add("/setting", "front-end/view/setting/index.php");
 $route->add("/setting/masterdata", "front-end/view/setting/masterdata/index.php");
 $route->add("/profile", "front-end/view/profile/index.php");
+$route->add("/map-search", "front-end/view/mapsearch/index.php");
 
 // Backend
 $route->add("/api/register", "back-end/register/register.php");
@@ -133,6 +134,7 @@ $route->add("/api/authenticate", "back-end/login/authenticate.php");
 $route->add("/api/masterdata", "back-end/setting/masterdata.php");
 $route->add("/api/listing", "back-end/listing/listing.php");
 $route->add("/api/detail", "back-end/detail/detail.php");
+$route->add("/api/profile", "back-end/profile/profile.php");
 
 //example route with multiple params
 // $route->add("/download/{downID}/{filename}", "download.php");

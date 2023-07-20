@@ -169,7 +169,6 @@ body {
 .menu-bottom a {
   text-decoration: none !important;
   color: whitesmoke;
-  
 }
 
 li {
@@ -461,6 +460,23 @@ h2.title-detail {
   font-size: 0.9rem !important;
 }
 
-.modal-backdrop{
+.modal-backdrop {
   z-index: 10 !important;
+}
+
+.search-result {
+  background: white;
+  width: 100%;
+  z-index: 100;
+  position: absolute;
+}
+
+.result-item {
+  color: rgb(4, 62, 179);
+  display: block;
+}
+
+.result-item:hover {
+  background: rgb(4, 62, 179);
+  color: white;
 }

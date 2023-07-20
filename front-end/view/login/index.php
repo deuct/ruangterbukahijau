@@ -6,7 +6,7 @@ function checkLogin($baseURL)
   session_start();
 
   if (isset($_SESSION['loggedin'])) {
-    header('Location: ' . $baseURL . '/listing');
+    header('Location: ' . $baseURL . '/list');
   }
 }
 
@@ -50,6 +50,8 @@ checkLogin($baseURL);
         </div>
       </form>
       <span class="login-link">Doesn't have an account ? <a href="<?= $baseURL ?>/register">Sign Up</a></span>
+      <span class="login-link mt-3"><button type="button" class="btn btn-link" onclick="noLogin()">No thanks, i dont want to login</button></span>
+      <br />
     </div>
   </div>
 
@@ -57,6 +59,27 @@ checkLogin($baseURL);
   <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
   <script type="text/javascript">
+    function noLogin() {
+      <?php
+      $_SESSION['loggedin'] = true;
+      $_SESSION['username'] = "Anonymouse";
+      $_SESSION['fullname'] = "Anonymouse";
+      $_SESSION['role'] = "user";
+      $_SESSION['berhasil'] = true;
+      ?>
+
+      var berhasil = <?= $_SESSION['berhasil'] ?>;
+      console.log(berhasil);
+
+      if (berhasil === 1) {
+        console.log("success");
+        window.location.reload();
+        // window.location.href = "google.com";
+        // console.log($_SESSION['berhasil']);
+
+      }
+    }
+
     $(document).ready(function() {
       var request;
       var baseURL = `<?php echo $baseURL ?>`;

@@ -12,6 +12,7 @@ include_once('./back-end/sys/sessiondestroy.php');
 
 // // Append the requested resource location to the URL   
 // $url .= $_SERVER['REQUEST_URI'];
+$qSearch = isset($_GET['q']) ? $_GET['q'] : "";
 ?>
 
 <!DOCTYPE html>
@@ -25,9 +26,9 @@ include_once('./back-end/sys/sessiondestroy.php');
   <link href="<?= $baseURL ?>/front-end/style/globalstyle.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     window.history.forward();
-  </script>
+  </script> -->
 </head>
 
 <body>
@@ -38,7 +39,7 @@ include_once('./back-end/sys/sessiondestroy.php');
         <div class="title-header">
           <h2>
             Welcome back, <br />
-            Username
+            <?= $fullname ?>
           </h2>
         </div>
         <div class="title-header-desc">
@@ -52,10 +53,11 @@ include_once('./back-end/sys/sessiondestroy.php');
           <span class="listing-title">List of Ruang Terbuka Hijau :</span>
           <div class="form-flex mt-2 mb-4">
             <input type="text" class="form-control" id="listing-search" placeholder="Search something..." />
-            <button type="button" class="btn btn-search btn-sm">
-              <img src="<?= $baseURL ?>/assets/search-icon.png" width="25px" />
+            <button type="button" class="btn btn-search btn-sm" onclick="searchRTH()">
+              <img src="<?= $baseURL ?>/assets/search-icon.png" onclick="searchRTH()" width="25px" />
             </button>
           </div>
+          <div id="desc-search"></div>
         </div>
       </div>
 
@@ -76,32 +78,70 @@ include_once('./back-end/sys/sessiondestroy.php');
   <script type="text/javascript">
     var baseURL = `<?= $baseURL ?>`;
     var imgDirShort = `<?= $imgDirShort ?>`;
+    var qSearch = `<?= $qSearch ?>`;
+
+    function searchRTH() {
+      let searchValue = document.getElementById("listing-search").value;
+      window.location.href = "http://localhost:8080/ruangterbukahijau/list?q=" + searchValue;
+    }
 
     $(document).ready(function() {
-      $.ajax({
-        url: baseURL + "/api/listing",
-        type: "POST",
-        data: {
-          action: "getAllTaman",
-        },
-        success: function(response) {
-          var resJSON = $.parseJSON(response);
-          // console.log(resJSON);
+      if (qSearch !== "") {
+        $.ajax({
+          url: baseURL + "/api/listing",
+          type: "POST",
+          data: {
+            data: {
+              searchValue: qSearch
+            },
+            action: "getSearchTaman",
+          },
+          success: function(response) {
+            var resJSON = $.parseJSON(response);
+            // console.log(resJSON);
 
-          if (resJSON.status === "failed") {
-            console.log(resJSON.msg);
-          } else if (resJSON.status === "success") {
-            // console.log(resJSON.data);
-            assignValue(resJSON.data);
+            if (resJSON.status === "failed") {
+              console.log(resJSON.msg);
+            } else if (resJSON.status === "success") {
+              // console.log(resJSON.data);
+              assignValue(resJSON.data);
+            }
+          },
+          error: function() {
+            console.log("failed");
           }
-        },
-        error: function() {
-          console.log("failed");
-        }
-      });
+        });
+      } else {
+        $.ajax({
+          url: baseURL + "/api/listing",
+          type: "POST",
+          data: {
+            action: "getAllTaman",
+          },
+          success: function(response) {
+            var resJSON = $.parseJSON(response);
+            // console.log(resJSON);
+
+            if (resJSON.status === "failed") {
+              console.log(resJSON.msg);
+            } else if (resJSON.status === "success") {
+              // console.log(resJSON.data);
+              assignValue(resJSON.data);
+            }
+          },
+          error: function() {
+            console.log("failed");
+          }
+        });
+      }
     })
 
     function assignValue(data) {
+      let descSearch = document.getElementById("desc-search");
+      descSearch.style = "margin-bottom: 15px;";
+      if (qSearch !== "") {
+        descSearch.innerHTML = `Showing search for : <button class="btn btn-outline-primary btn-sm">` + qSearch + `</button>`;
+      }
       let thumbnail;
       let nameTaman;
 
@@ -110,6 +150,7 @@ include_once('./back-end/sys/sessiondestroy.php');
         nameTaman = data[i].nama;
         statusTaman = data[i].status;
         descTaman = data[i].deskripsi;
+        kodeTaman = data[i].kode_rth;
 
         if (thumbnail !== "") {
           thumbnail = thumbnail[0];
@@ -117,7 +158,9 @@ include_once('./back-end/sys/sessiondestroy.php');
 
         let cardListing = document.createElement('div');
         cardListing.id = "card-listing";
+        // cardListing.className = "card-listing";
         cardListing.innerHTML = `
+          <a class="card-listing" style="text-decoration: none !important; color: #000" href="` + baseURL + `/detail?id=` + kodeTaman + `">
             <div class="card-image">
               <img src="` + baseURL + imgDirShort + `/` + thumbnail + ` "/>
             </div>
@@ -129,7 +172,8 @@ include_once('./back-end/sys/sessiondestroy.php');
               <div class="card-desc">
                 ` + descTaman + `
               </div>
-            </div>`;
+            </div>
+          </a>`;
 
         let bodyList = document.getElementById('body-list');
         bodyList.appendChild(cardListing);

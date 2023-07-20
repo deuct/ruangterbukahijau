@@ -1,4 +1,7 @@
-<?php include_once('./environment.php') ?>
+<?php
+include_once('./environment.php');
+include_once('./back-end/sys/sessionlogin.php');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,31 +22,31 @@
             <div class="col-lg-10 col-md-10 col-sm-12">
                 <a class="btn btn-back" href="<?= $baseURL ?>/list">&#8826; Back</a>
                 <div class="title-header">
-                <h2>
-                    Setting Menu
-                </h2>
+                    <h2>
+                        Setting Menu
+                    </h2>
                 </div>
                 <div class="title-header-desc">
-                Here you can setting the application.
+                    Here you can setting the application.
                 </div>
             </div>
         </div>
-        
-    <div class="body-page">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-10 col-sm-12">
-                <div class="setting-menulist">
-                    <a href="<?= $baseURL ?>/setting/masterdata">
-                        <div class="setting-icon">
-                            <img src="https://cdn-icons-png.flaticon.com/512/5610/5610258.png" />
-                            <span>Kategori Taman</span>
-                        </div>
-                    </a>
+
+        <div class="body-page">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-10 col-sm-12">
+                    <div class="setting-menulist">
+                        <a href="<?= $baseURL ?>/setting/masterdata">
+                            <div class="setting-icon">
+                                <img src="https://cdn-icons-png.flaticon.com/512/5610/5610258.png" />
+                                <span>Kategori Taman</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-                
+
     </div>
     <?php include_once './front-end/view/component/footer.php' ?>
 

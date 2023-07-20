@@ -268,6 +268,7 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       document.getElementById("propinsi").value = data.propinsi;
       document.getElementById("kecamatan").value = data.kecamatan;
       document.getElementById("kelurahan").value = data.kelurahan;
+      document.getElementById("kota").value = data.kota;
       document.getElementById("rt").value = data.rt;
       document.getElementById("rw").value = data.rw;
 
