@@ -50,7 +50,11 @@ function getDetailTaman($conn, $baseURL, $data)
     // LEFT JOIN kordinat_rth coor ON coor.kode_taman = detail.kode_rth AND coor.kode_kordinat = detail.kode_kordinat 
     // LEFT JOIN kategori_rth kg ON kg.kode_kategori = detail.kode_kategori
     // WHERE detail.kode_rth = '$kodeTaman'";
-    $qGetDetailTaman = "SELECT detail.kode_rth, detail.nama, kg.nama_kategori, detail.lst_gambar, detail.kapasitas, detail.luas_area, coor.kordinat_1, coor.kordinat_2, detail.status, detail.deskripsi, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.rt, detail.rw FROM detail_rth detail 
+    $qGetDetailTaman = "SELECT detail.kode_rth, detail.nama, kg.nama_kategori, detail.lst_gambar, detail.kapasitas, detail.luas_area, coor.kordinat_1, coor.kordinat_2, 
+    CASE WHEN detail.status = '0' THEN 'Close'
+    WHEN detail.status = '1' THEN 'Open'
+    WHEN detail.status = '2' THEN 'Under Maintenance' END as status, 
+    detail.deskripsi, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.kode_kategori FROM detail_rth detail 
     LEFT JOIN kordinat_rth coor ON coor.kode_taman = detail.kode_rth AND coor.kode_kordinat = detail.kode_kordinat 
     LEFT JOIN kategori_rth kg ON kg.kode_kategori = detail.kode_kategori
     WHERE detail.kode_rth = '$kodeTaman'";
@@ -156,9 +160,9 @@ function addTaman($conn, $baseURL, $data)
     $propinsi = $data->propinsi;
     $kota = $data->kota;
     $kecamatan = $data->kecamatan;
-    $kelurahan = $data->kelurahan;
-    $rt = !empty($data->rt) ? $data->rt : 0;
-    $rw = !empty($data->rw) ? $data->rw : 0;
+    $kelurahan = !empty($data->kelurahan) ? $data->kelurahan : "";
+    // $rt = !empty($data->rt) ? $data->rt : 0;
+    // $rw = !empty($data->rw) ? $data->rw : 0;
     // $kodeKordinat = isset($_POST['kodeKordinat']) ? $data->kodeKordinat : "";
     if (!empty($data->arrImgUpload)) {
         $arrImgUpload = json_encode($data->arrImgUpload);
@@ -179,8 +183,6 @@ function addTaman($conn, $baseURL, $data)
         propinsi = '$propinsi',
         kecamatan = '$kecamatan',
         kelurahan = '$kelurahan',
-        rt = '$rt',
-        rw = '$rw',
         modified_at = '$dateNow',
         modified_by = 'superadmin'
         WHERE kode_rth = '$kodeTaman'";

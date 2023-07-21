@@ -102,14 +102,21 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                 <td>Propinsi</td>
                 <td>:</td>
                 <td>
-                  <input id="propinsi" name="propinsi" type="text" class="form-control" />
+                  <!-- <input id="propinsi" name="propinsi" type="text" class="form-control" /> -->
+                  <input id="propinsi" name="propinsi" type="text" class="form-control" value="DKI Jakarta" readonly />
                 </td>
               </tr>
               <tr>
                 <td>Kota</td>
                 <td>:</td>
                 <td>
-                  <input id="kota" name="kota" type="text" class="form-control" />
+                  <!-- <input id="kota" name="kota" type="text" class="form-control" /> -->
+                  <select id="kota" name="kota" class="form-select" aria-label="Select Status">
+                    <option value="Jakarta Selatan" selected>Jakarta Selatan</option>
+                    <option value="Jakarta Barat">Jakarta Barat</option>
+                    <option value="Jakarta Timur">Jakarta Timur</option>
+                    <option value="Jakarta Pusat">Jakarta Pusat</option>
+                  </select>
                 </td>
               </tr>
               <tr>
@@ -126,7 +133,7 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                   <input id="kelurahan" name="kelurahan" type="text" class="form-control" id="kelurahan" name="kelurahan" />
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>RT</td>
                 <td>:</td>
                 <td>
@@ -139,7 +146,7 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                 <td>
                   <input id="rw" name="rw" type="text" class="form-control" id="rw" name="rw" />
                 </td>
-              </tr>
+              </tr> -->
             </table>
           </div>
         </div>
@@ -224,6 +231,41 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       hdn_kodeTaman.value = kodeTaman;
     }
 
+    function getListKategori() {
+      var listKategori = [];
+
+      request = $.ajax({
+        url: baseURL + "/api/detail",
+        type: "POST",
+        data: {
+          action: 'getListKategori'
+        }
+      });
+
+      request.done(function(response, textStatus, jqXHR) {
+        var resJSON = $.parseJSON(response);
+        // console.log(resJSON);
+
+        if (resJSON.status === "failed") {
+          console.log(resJSON.msg);
+        } else if (resJSON.status === "success") {
+          var kategoriTaman = document.getElementById("kategori-taman");
+          var lstKategori = resJSON.data;
+
+          for (var i = 0; i < lstKategori.length; i++) {
+            // console.log(lstKategori[i]);
+            var opt = document.createElement("option");
+            opt.value = lstKategori[i].kode_kategori;
+            opt.id = lstKategori[i].kode_kategori;
+            opt.innerHTML = lstKategori[i].nama_kategori;
+            kategoriTaman.add(opt);
+          }
+        }
+      });
+    }
+
+    getListKategori();
+
     getDetailTaman();
 
     function getDetailTaman() {
@@ -260,7 +302,9 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       let lstGambar = data.lst_gambar !== "" ? JSON.parse(data.lst_gambar) : "";
       document.getElementById("taman-name").innerHTML = data.nama;
       document.getElementById("nama-taman").value = data.nama;
-      document.getElementById("kategori-taman").value = data.kode_kategori;
+      // document.getElementById("kategori-taman").value = data.kode_kategori;
+      let x = document.querySelector('#kategori-taman');
+      x.value = data.kode_kategori;
       document.getElementById("kapasitas-taman").value = data.kapasitas;
       document.getElementById("luasarea-taman").value = data.luas_area;
       document.getElementById("status-taman").value = data.status;
@@ -269,8 +313,8 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       document.getElementById("kecamatan").value = data.kecamatan;
       document.getElementById("kelurahan").value = data.kelurahan;
       document.getElementById("kota").value = data.kota;
-      document.getElementById("rt").value = data.rt;
-      document.getElementById("rw").value = data.rw;
+      // document.getElementById("rt").value = data.rt;
+      // document.getElementById("rw").value = data.rw;
 
       // console.log(JSON.parse(data.lst_gambar));
       if (lstGambar !== "") {
@@ -372,40 +416,6 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       return id;
     }
 
-    function getListKategori() {
-      var listKategori = [];
-
-      request = $.ajax({
-        url: baseURL + "/api/detail",
-        type: "POST",
-        data: {
-          action: 'getListKategori'
-        }
-      });
-
-      request.done(function(response, textStatus, jqXHR) {
-        var resJSON = $.parseJSON(response);
-        // console.log(resJSON);
-
-        if (resJSON.status === "failed") {
-          console.log(resJSON.msg);
-        } else if (resJSON.status === "success") {
-          var kategoriTaman = document.getElementById("kategori-taman");
-          var lstKategori = resJSON.data;
-
-          for (var i = 0; i < lstKategori.length; i++) {
-            // console.log(lstKategori[i]);
-            var opt = document.createElement("option");
-            opt.value = lstKategori[i].kode_kategori;
-            opt.innerHTML = lstKategori[i].nama_kategori;
-            kategoriTaman.add(opt);
-          }
-        }
-      });
-    }
-
-    getListKategori();
-
     function saveForm() {
       URLRedirect = "<?= $baseURL ?>/detail/setmap?id=<?= $idTaman ?>&edit=true";
     }
@@ -416,6 +426,12 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
 
     $("#add-taman").submit(function(e) {
       e.preventDefault();
+
+      // var $form = $(this);
+      // var $inputs = $form.find("input, select, button, textarea");
+      // var kategoriTaman = $form.find('select[name="kategori-taman"]').val();
+      // console.log(kategoriTaman);
+      // abort();
 
       if (request) {
         request.abort();
@@ -431,11 +447,11 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
       var statusTaman = $form.find('select[name="status-taman"]').val();
       var deskripsiTaman = $form.find('textarea[name="deskripsi-taman"]').val();
       var propinsi = $form.find('input[name="propinsi"]').val();
-      var kota = $form.find('input[name="kota"]').val();
+      var kota = $form.find('select[name="kota"]').val();
       var kecamatan = $form.find('input[name="kecamatan"]').val();
       var kelurahan = $form.find('input[name="kelurahan"]').val();
-      var rt = $form.find('input[name="rt"]').val();
-      var rw = $form.find('input[name="rw"]').val();
+      // var rt = $form.find('input[name="rt"]').val();
+      // var rw = $form.find('input[name="rw"]').val();
 
       $inputs.prop("disabled", true);
 
@@ -461,8 +477,8 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
             kota: kota,
             kecamatan: kecamatan,
             kelurahan: kelurahan,
-            rt: rt,
-            rw: rw,
+            // rt: rt,
+            // rw: rw,
             arrImgUpload: arrImgUploadSend
           },
           action: 'addTaman'

@@ -33,7 +33,7 @@ $isEdit = isset($_GET['edit']) ? $_GET['edit'] : "";
         <div class="title-header">
           <h2>Edit Page for</h2>
         </div>
-        <div class="title-header-desc">Taman Barito</div>
+        <div class="title-header-desc" id="header-title"></div>
       </div>
     </div>
   </div>
@@ -102,6 +102,9 @@ $isEdit = isset($_GET['edit']) ? $_GET['edit'] : "";
             console.log(resJSON.msg);
           } else if (resJSON.status === "success") {
             let data = resJSON.data[0];
+            var namaTaman = data.nama;
+            document.getElementById("header-title").innerHTML = namaTaman;
+            console.log(namaTaman);
             var kordinat1 = data.kordinat_1;
             var kordinat2 = data.kordinat_2;
 

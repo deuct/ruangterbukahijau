@@ -102,14 +102,20 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                                 <td>Propinsi</td>
                                 <td>:</td>
                                 <td>
-                                    <input id="propinsi" name="propinsi" type="text" class="form-control" />
+                                    <input id="propinsi" name="propinsi" type="text" class="form-control" value="DKI Jakarta" readonly />
                                 </td>
                             </tr>
                             <tr>
                                 <td>Kota</td>
                                 <td>:</td>
                                 <td>
-                                    <input id="kota" name="kota" type="text" class="form-control" />
+                                    <!-- <input id="kota" name="kota" type="text" class="form-control" /> -->
+                                    <select id="kota" name="kota" class="form-select" aria-label="Select Status">
+                                        <option value="Jakarta Selatan">Jakarta Selatan</option>
+                                        <option value="Jakarta Barat">Jakarta Barat</option>
+                                        <option value="Jakarta Timur">Jakarta Timur</option>
+                                        <option value="Jakarta Pusat">Jakarta Pusat</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -126,7 +132,7 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                                     <input id="kelurahan" name="kelurahan" type="text" class="form-control" id="kelurahan" name="kelurahan" />
                                 </td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>RT</td>
                                 <td>:</td>
                                 <td>
@@ -139,7 +145,7 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                                 <td>
                                     <input id="rw" name="rw" type="text" class="form-control" id="rw" name="rw" />
                                 </td>
-                            </tr>
+                            </tr> -->
                         </table>
                     </div>
                 </div>
@@ -391,11 +397,12 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
             var statusTaman = $form.find('select[name="status-taman"]').val();
             var deskripsiTaman = $form.find('textarea[name="deskripsi-taman"]').val();
             var propinsi = $form.find('input[name="propinsi"]').val();
-            var kota = $form.find('input[name="kota"]').val();
+            // var kota = $form.find('input[name="kota"]').val();
+            var kota = $form.find('select[name="kota"]').val();
             var kecamatan = $form.find('input[name="kecamatan"]').val();
             var kelurahan = $form.find('input[name="kelurahan"]').val();
-            var rt = $form.find('input[name="rt"]').val();
-            var rw = $form.find('input[name="rw"]').val();
+            // var rt = $form.find('input[name="rt"]').val();
+            // var rw = $form.find('input[name="rw"]').val();
 
             $inputs.prop("disabled", true);
 
@@ -421,8 +428,8 @@ $setmap = isset($_GET['setmap']) ? $_GET['setmap'] : "";
                         kota: kota,
                         kecamatan: kecamatan,
                         kelurahan: kelurahan,
-                        rt: rt,
-                        rw: rw,
+                        // rt: rt,
+                        // rw: rw,
                         arrImgUpload: arrImgUploadSend
                     },
                     action: 'addTaman'

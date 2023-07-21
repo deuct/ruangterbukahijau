@@ -178,6 +178,28 @@ $qSearch = isset($_GET['q']) ? $_GET['q'] : "";
         let bodyList = document.getElementById('body-list');
         bodyList.appendChild(cardListing);
       }
+
+      var statusCrd = document.getElementsByClassName("card-status");
+
+      console.log(statusCrd);
+
+      for (let i = 0; i < statusCrd.length; i++) {
+        let statusElement = statusCrd[i];
+        // console.log(statusCrd[i].innerHTML);
+        console.log(statusElement);
+        // statusElement.style = "background: red;";
+        console.log(statusElement.innerHTML);
+
+        if (statusElement.innerHTML == "Under Maintenance") {
+          statusElement.style = "background: yellow; padding: 3px;";
+        } else if (statusElement.innerHTML == "Close") {
+          statusElement.style = "background: red; padding: 3px;";
+        }
+      }
+
+      // statusCrd.forEach(element => {
+      //   console.log(element);
+      // });
     }
   </script>
 </body>

@@ -31,15 +31,35 @@ function getSearchTaman($conn, $baseURL, $data)
     $responseObj = new stdClass();
     $searchValue = $data->searchValue;
 
-    $qGetSearchedTaman = "SELECT detail.kode_rth, detail.nama, detail.kapasitas, detail.luas_area, 
-    CASE WHEN detail.status = '0' THEN 'Close'
-    WHEN detail.status = '1' THEN 'Open'
-    WHEN detail.status = '2' THEN 'Under Maintenance'
-    END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.rt, detail.rw, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth
-    WHERE detail.nama LIKE '%$searchValue%' OR detail.kota LIKE '%$searchValue' OR detail.kecamatan LIKE '%$searchValue%' OR detail.kelurahan LIKE '%$searchValue%'";
-    $stmt = $conn->prepare($qGetSearchedTaman);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $splitValue = explode(" ", $searchValue);
+    $categoryValue = $splitValue[0];
+
+    // echo $searchValue;
+
+    if ($categoryValue == "taman" || $categoryValue == "kebun") {
+        // echo "here 1";
+        $searchValue = substr($searchValue, 6);
+        $qGetSearchedTaman = "SELECT detail.kode_rth, detail.nama, detail.kapasitas, detail.luas_area, kategori.nama_kategori,
+        CASE WHEN detail.status = '0' THEN 'Close'
+        WHEN detail.status = '1' THEN 'Open'
+        WHEN detail.status = '2' THEN 'Under Maintenance'
+        END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth LEFT JOIN kategori_rth kategori ON kategori.kode_kategori = detail.kode_kategori
+        WHERE kategori.nama_kategori LIKE '%$categoryValue%' AND detail.kota LIKE '%$searchValue%'";
+        $stmt = $conn->prepare($qGetSearchedTaman);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        // echo "here 2";
+        $qGetSearchedTaman = "SELECT detail.kode_rth, detail.nama, detail.kapasitas, detail.luas_area, 
+        CASE WHEN detail.status = '0' THEN 'Close'
+        WHEN detail.status = '1' THEN 'Open'
+        WHEN detail.status = '2' THEN 'Under Maintenance'
+        END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth
+        WHERE detail.nama LIKE '%$searchValue%' OR detail.kota LIKE '%$searchValue%' OR detail.kecamatan LIKE '%$searchValue%' OR detail.kelurahan LIKE '%$searchValue%'";
+        $stmt = $conn->prepare($qGetSearchedTaman);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    }
 
     $resultArr = array();
     foreach ($result as $key => $rs) {
@@ -100,7 +120,7 @@ function getAllTaman($conn, $baseURL)
     CASE WHEN detail.status = '0' THEN 'Close'
     WHEN detail.status = '1' THEN 'Open'
     WHEN detail.status = '2' THEN 'Under Maintenance'
-    END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.rt, detail.rw, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth";
+    END AS status, detail.kota, detail.propinsi, detail.kecamatan, detail.kelurahan, detail.lst_gambar, co.kordinat_1, co.kordinat_2, detail.deskripsi FROM detail_rth detail LEFT JOIN kordinat_rth co ON co.kode_kordinat = detail.kode_kordinat AND co.kode_taman = detail.kode_rth";
     $stmt = $conn->prepare($qGetListTaman);
     $stmt->execute();
     $result = $stmt->get_result();

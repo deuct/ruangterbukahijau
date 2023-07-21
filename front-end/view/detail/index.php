@@ -142,7 +142,7 @@ $kodeTaman = $_GET['id'];
                 <input type="text" id="kelurahan-rth" name="kelurahan-rth" class="form-control" readonly />
               </td>
             </tr>
-            <!--- di comment rtrw sementara
+            <!--- di comment rtrw sementaraa
             <tr>
               <td>RT</td>
               <td>:</td>
