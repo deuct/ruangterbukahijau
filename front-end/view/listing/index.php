@@ -2,6 +2,7 @@
 include_once('./environment.php');
 include_once('./back-end/sys/sessionlogin.php');
 include_once('./back-end/sys/sessiondestroy.php');
+include_once('./back-end/sys/anonymouselogin.php');
 
 // if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 //   $url = "https://";
@@ -13,6 +14,7 @@ include_once('./back-end/sys/sessiondestroy.php');
 // // Append the requested resource location to the URL   
 // $url .= $_SERVER['REQUEST_URI'];
 $qSearch = isset($_GET['q']) ? $_GET['q'] : "";
+// session_start();
 ?>
 
 <!DOCTYPE html>
@@ -35,11 +37,12 @@ $qSearch = isset($_GET['q']) ? $_GET['q'] : "";
   <div class="row justify-content-center">
     <div class="header-page">
       <div class="col-lg-10 col-md-10 col-sm-12">
-        <a class="btn btn-back" href="<?= $baseURL ?>/list?logout=true">&#8826; Logout</a>
+        <?php if ($_SESSION['username'] !== "Anonymouse") { ?>
+          <a class="btn btn-back" href="<?= $baseURL ?>/list?logout=true">&#8826; Logout</a>
+        <?php } ?>
         <div class="title-header">
           <h2>
-            Welcome back, <br />
-            <?= $fullname ?>
+            List Taman
           </h2>
         </div>
         <div class="title-header-desc">

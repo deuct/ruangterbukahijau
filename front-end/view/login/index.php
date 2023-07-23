@@ -5,7 +5,7 @@ function checkLogin($baseURL)
 {
   session_start();
 
-  if (isset($_SESSION['loggedin'])) {
+  if (isset($_SESSION['loggedin']) && $_SESSION['role'] == "admin") {
     header('Location: ' . $baseURL . '/list');
   }
 }
@@ -47,10 +47,11 @@ checkLogin($baseURL);
         <div class="mb-3">
           <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
           <input type="submit" class="btn btn-login" value="Login">
+          <a href="<?= $baseURL ?>" class="btn btn-danger mt-5" style="width: 100%;">Cancel</a>
         </div>
       </form>
-      <span class="login-link">Doesn't have an account ? <a href="<?= $baseURL ?>/register">Sign Up</a></span>
-      <span class="login-link mt-3"><button type="button" class="btn btn-link" onclick="noLogin()">No thanks, i dont want to login</button></span>
+      <!-- <span class="login-link">Doesn't have an account ? <a href="<?= $baseURL ?>/register">Sign Up</a></span> -->
+      <!-- <span class="login-link mt-3"><button type="button" class="btn btn-link" onclick="noLogin()">No thanks, i dont want to login</button></span> -->
       <br />
     </div>
   </div>

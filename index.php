@@ -115,8 +115,9 @@ $route = new Route();
 // $route->add("/user/{id}", "listing.php");
 
 // Frontend
+$route->add("/", "front-end/view/home/index.php");
 $route->add("/login", "front-end/view/login/index.php");
-$route->add("/register", "front-end/view/register/index.php");
+// $route->add("/register", "front-end/view/register/index.php");
 $route->add("/list", "front-end/view/listing/index.php");
 $route->add("/list-admin", "front-end/view/listing/admin/index.php");
 $route->add("/detail", "front-end/view/detail/index.php");
@@ -127,6 +128,7 @@ $route->add("/setting", "front-end/view/setting/index.php");
 $route->add("/setting/masterdata", "front-end/view/setting/masterdata/index.php");
 $route->add("/profile", "front-end/view/profile/index.php");
 $route->add("/map-search", "front-end/view/mapsearch/index.php");
+$route->add("/map-taman", "front-end/view/maptaman/index.php");
 
 // Backend
 $route->add("/api/register", "back-end/register/register.php");

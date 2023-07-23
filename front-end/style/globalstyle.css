@@ -480,3 +480,18 @@ h2.title-detail {
   background: rgb(4, 62, 179);
   color: white;
 }
+
+.about-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.about-separator {
+  background: yellow;
+  width: 90%;
+  height: 1px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
